@@ -25,6 +25,7 @@ You can find the Rinkeby addresses of the current test contracts here:
 
 I will upload a current diagram of the marketplace interactions for you to visualize how the marketplace will interact with each other, as well as a base example of all the entities I would like recorded.
 <img src="https://github.com/StarKeyJON/GraphBounty/blob/main/pharoutmarketdiagram.png" />
+<img src="https://github.com/StarKeyJON/GraphBounty/blob/main/PharOutRewardsControllerDiagram.png" />
 <h4>The best creator of a subgraph is determined by:</h4>
 <ul>
   <li>Does include a link to a public Github with a Readme explaining any unique features or decisions made.</li>
