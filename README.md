@@ -34,3 +34,4 @@ I will upload a current diagram of the marketplace interactions for you to visua
   <li>Is finished with an adequate subgraph before I create one!</li>
   <li>Happy Hacking!</li>
   </ul>
+  These can be multiple subgraphs, but would ideally be one marketplace subgraph.
