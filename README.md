@@ -3,7 +3,7 @@ Create a better subgraph than me, before I do.
 
 The Phar-Out NFT Market needs a subgraph for decentralized querying in the front-end!
 
-I generated and coded the temp-mint contract and Pharout NFT contract and deployed both the Rinkeby and Mainnet versions here:
+I generated and coded the temp-mint contract and Pharout NFT contract subgraphs and deployed both the Rinkeby and Mainnet versions here:
 <ul>
   <li>https://thegraph.com/studio/subgraph/pharout-temp-mint-mainnet/</li>
   <li>https://thegraph.com/studio/subgraph/pharout-temp-mint/</li>
