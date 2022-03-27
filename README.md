@@ -19,7 +19,6 @@ You can find the Rinkeby addresses of the current test contracts here:
   <li> "rinkeby_MintAddress": "0x585c3Efea4554Aa4148ea916dC17DA8Bd1A49634"</li>
   <li> "rinkeby_NFTMarketAddress": "0xB8C9bB7C6D9eb97e31E9D1dBb6D15279dB982377"</li>
   <li> "rinkeby_OwnerProxyAddress": "0x531120563Dc04bE4b8dC0E167f63EE520bd2a17B"</li>
-  <li>  "rinkeby_PhamNFTsAddress": "0x851A7c43C148bfA7F79dAA312d09A61306B56006"</li>
   <li> "rinkeby_PhamTokenAddress": "0xA70C63dA41263cEb34cd66494Ebf95f7140312E1"</li>
   <li>  "rinkeby_RewardsControlAddress": "0xD89099C8310D2215195cbd8Ff5DBf35FD110100E"</li>  
 </ul>
@@ -31,8 +30,10 @@ I will upload a current diagram of the marketplace interactions for you to visua
   <li>Does include a link to a public Github with a Readme explaining any unique features or decisions made.</li>
   <li>Does index each entity according to the schema provided.(If expanded upon or adapted for different use, please explain why.)</li>
   <li>Does include indexing daily and hourly Rewards Control contract ETH holdings, ERC20 holdings, ClaimClock time and attributes(alpha, delta, omega times and total user count including total Pharout NFT holders.). To also include total dev count, dev rewards and total DAO rewards for each daily and hourly period.</li>
+  <li>Is not filled with generic events or function handlers.</li>
   <li>Must listen to retarded phunk at least once while coding. https://www.youtube.com/watch?v=pHyA16xiaMQ</li>
   <li>Is finished with an adequate subgraph before I create one!</li>
   <li>Happy Hacking!</li>
   </ul>
   These can be multiple subgraphs, but would ideally be one marketplace subgraph.
+  Due note, the PhamToken is a test token in place of PHUNKY, and the Mint contract will be the mainnet mint contract used to exchange PHNUNKY for PharOut NFTs.
