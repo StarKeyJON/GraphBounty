@@ -35,5 +35,5 @@ I will upload a current diagram of the marketplace interactions for you to visua
   <li>Is finished with an adequate subgraph before I create one!</li>
   <li>Happy Hacking!</li>
   </ul>
-  These would ideally be one marketplace subgraph.
+  This would ideally be one marketplace subgraph.
   Due note, the PhamToken is a test token in place of PHUNKY, and the Mint contract will be the mainnet mint contract used to exchange PHNUNKY for PharOut NFTs.
