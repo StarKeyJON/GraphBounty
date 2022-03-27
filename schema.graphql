@@ -29,9 +29,9 @@ type UnListedItem @entity {
   user: User!
   nft: NFT!
   trades: [Trade] @derivedFrom(field: "tradeItem")
-  blindBids: [BlindBid!]! @derivedFrom(field: "item")
-  blindOffers: [BlindOffer!]! @derivedFrom(field: "item")
-  blindTrades: [BlindTrade!]! @derivedFrom(field: "tradeItem")
+  blindBids: [BlindBid] @derivedFrom(field: "item")
+  blindOffers: [BlindOffer] @derivedFrom(field: "item")
+  blindTrades: [BlindTrade] @derivedFrom(field: "tradeItem")
 }
 
 type TradeItem @entity {
