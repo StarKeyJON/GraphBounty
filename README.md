@@ -31,7 +31,7 @@ I will upload a current diagram of the marketplace interactions for you to visua
   <li>Does include a link to a public Github with a Readme explaining any unique features or decisions made.</li>
   <li>Does index each entity according to the schema provided.(If expanded upon or adapted for different use, please explain why.)</li>
   <li>Does include indexing daily and hourly Rewards Control contract ETH holdings, ERC20 holdings, ClaimClock time and attributes(alpha, delta, omega times and total user count including total Pharout NFT holders.). To also include total dev count, dev rewards and total DAO rewards for each daily and hourly period.</li>
-  <li>Must listen to retarded funk at least once while coding. https://www.youtube.com/watch?v=pHyA16xiaMQ</li>
+  <li>Must listen to retarded phunk at least once while coding. https://www.youtube.com/watch?v=pHyA16xiaMQ</li>
   <li>Is finished with an adequate subgraph before I create one!</li>
   <li>Happy Hacking!</li>
   </ul>
