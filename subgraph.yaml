@@ -26,6 +26,12 @@ dataSources:
       abis:
         - name: NFTMarket
           file: ./abis/NFTMarket.json
+        - name: ERC20
+          file: ./abis/ERC20.json
+        - name: ERC721
+          file: ./abis/ERC721.json
+        - name: ERC1155
+          file: ./abis/ERC1155.json
       eventHandlers:
         - event: ItemBought(uint256,indexed uint256,indexed address,indexed address,address)
           handler: handleItemBought
@@ -55,6 +61,10 @@ dataSources:
       abis:
         - name: MarketTrades
           file: ./abis/MarketTrades.json
+        - name: ERC721
+          file: ./abis/ERC721.json
+        - name: ERC1155
+          file: ./abis/ERC1155.json
       eventHandlers:
         - event: BlindTradeEntered(bool,bool,uint256,uint256,uint256,uint256,indexed address,indexed address,indexed address)
           handler: handleBlindTradeEntered
@@ -86,6 +96,10 @@ dataSources:
       abis:
         - name: MarketBids
           file: ./abis/MarketBids.json
+        - name: ERC721
+          file: ./abis/ERC721.json
+        - name: ERC1155
+          file: ./abis/ERC1155.json
       eventHandlers:
         - event: BidAccepted(indexed uint256,uint256,uint256,indexed address,indexed address)
           handler: handleBidAccepted
@@ -121,6 +135,12 @@ dataSources:
       abis:
         - name: MarketOffers
           file: ./abis/MarketOffers.json
+        - name: ERC20
+          file: ./abis/ERC20.json
+        - name: ERC721
+          file: ./abis/ERC721.json
+        - name: ERC1155
+          file: ./abis/ERC1155.json
       eventHandlers:
         - event: BlindOfferWithdrawn(indexed uint256,indexed address)
           handler: handleBlindOfferWithdrawn
@@ -150,6 +170,10 @@ dataSources:
       abis:
         - name: MarketCollections
           file: ./abis/MarketCollections.json
+        - name: ERC721
+          file: ./abis/ERC721.json
+        - name: ERC1155
+          file: ./abis/ERC1155.json
       eventHandlers:
         - event: CollectionUpdated(bool,indexed address)
           handler: handleCollectionUpdated
@@ -174,6 +198,12 @@ dataSources:
       abis:
         - name: RewardsControl
           file: ./abis/RewardsControl.json
+        - name: ERC20
+          file: ./abis/ERC20.json
+        - name: ERC721
+          file: ./abis/ERC721.json
+        - name: ERC1155
+          file: ./abis/ERC1155.json
       eventHandlers:
         - event: DaoClaimed(indexed address,uint256,uint256[],address[])
           handler: handleDaoClaimed
@@ -207,6 +237,10 @@ dataSources:
       abis:
         - name: Mint
           file: ./abis/Mint.json
+        - name: ERC20
+          file: ./abis/ERC20.json
+        - name: ERC721
+          file: ./abis/ERC721.json
       eventHandlers:
         - event: Received(address,uint256)
           handler: handleReceived
@@ -229,6 +263,8 @@ dataSources:
       abis:
         - name: TempMint
           file: ./abis/TempMint.json
+        - name: ERC721
+          file: ./abis/ERC721.json
       eventHandlers:
         - event: nftClaimed(uint256,address,address)
           handler: handlenftClaimed
