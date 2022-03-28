@@ -1,0 +1,235 @@
+specVersion: 0.0.2
+schema:
+  file: ./schema.graphql
+dataSources:
+  - kind: ethereum
+    name: NFTMarket
+    network: rinkeby
+    source:
+      address: "0xB8C9bB7C6D9eb97e31E9D1dBb6D15279dB982377"
+      abi: NFTMarket
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.5
+      language: wasm/assemblyscript
+      entities:
+        - Stats
+        - User
+        - MarketItem
+        - NFT
+        - Collection
+        - Token
+        - Swap
+        - Bid
+        - Trade
+        - Offer
+      abis:
+        - name: NFTMarket
+          file: ./abis/NFTMarket.json
+      eventHandlers:
+        - event: ItemBought(uint256,indexed uint256,indexed address,indexed address,address)
+          handler: handleItemBought
+        - event: ItemDelisted(indexed uint256,indexed uint256,indexed address)
+          handler: handleItemDelisted
+        - event: ItemListed(uint256,uint256,indexed uint256,indexed address,indexed address)
+          handler: handleItemListed
+        - event: ItemUpdated(uint256,indexed uint256,uint256,indexed address,indexed address)
+          handler: handleItemUpdated
+      file: ./src/mapping.ts
+  - kind: ethereum/contract
+    name: MarketTrades
+    network: rinkeby
+    source:
+      address: "0xeD08820e94755dC30E161351427d2143Ef385c86"
+      abi: MarketTrades
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.5
+      language: wasm/assemblyscript
+      entities:
+        - Stats
+        - User
+        - MarketItem
+        - NFT
+        - Trade
+      abis:
+        - name: MarketTrades
+          file: ./abis/MarketTrades.json
+      eventHandlers:
+        - event: BlindTradeEntered(bool,bool,uint256,uint256,uint256,uint256,indexed address,indexed address,indexed address)
+          handler: handleBlindTradeEntered
+        - event: TradeAccepted(bool,bool,indexed uint256,indexed uint256,uint256,address,indexed address,address)
+          handler: handleTradeAccepted
+        - event: TradeEntered(bool,uint256,uint256,uint256,uint256,indexed address,indexed address,indexed address)
+          handler: handleTradeEntered
+        - event: TradeUpdated(bool,bool,indexed uint256,indexed uint256,uint256,address,indexed address,address)
+          handler: handleTradeUpdated
+        - event: TradeWithdrawn(bool,uint256,uint256,indexed uint256,indexed address,indexed address)
+          handler: handleTradeWithdrawn
+      file: ./src/mappings/MarketTrades.ts
+  - kind: ethereum/contract
+    name: MarketBids
+    network: rinkeby
+    source:
+      address: "0x58Cf70baCd7e754161f604228bbeC1C48b619893"
+      abi: MarketBids
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.5
+      language: wasm/assemblyscript
+      entities:
+        - Stats
+        - User
+        - MarketItem
+        - NFT
+        - Bid
+      abis:
+        - name: MarketBids
+          file: ./abis/MarketBids.json
+      eventHandlers:
+        - event: BidAccepted(indexed uint256,uint256,uint256,indexed address,indexed address)
+          handler: handleBidAccepted
+        - event: BidEntered(uint256,uint256,uint256,uint256,indexed address,indexed address)
+          handler: handleBidEntered
+        - event: BidRefunded(indexed uint256,indexed uint256,indexed address)
+          handler: handleBidRefunded
+        - event: BidWithdrawn(indexed uint256,indexed uint256,indexed address)
+          handler: handleBidWithdrawn
+        - event: BlindBidAccepted(indexed uint256,uint256,uint256,indexed address,indexed address)
+          handler: handleBlindBidAccepted
+        - event: BlindBidWithdrawn(indexed uint256,indexed address)
+          handler: handleBlindBidWithdrawn
+        - event: BlindBidentered(bool,indexed uint256,uint256,uint256,uint256,indexed address,indexed address)
+          handler: handleBlindBidentered
+      file: ./src/mappings/MarketBids.ts
+  - kind: ethereum/contract
+    name: MarketOffers
+    network: rinkeby
+    source:
+      address: "0x92A39E24935Ced66684faaffA9b4B3262419c597"
+      abi: MarketOffers
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.5
+      language: wasm/assemblyscript
+      entities:
+        - Stats
+        - User
+        - MarketItem
+        - NFT
+        - Offer
+      abis:
+        - name: MarketOffers
+          file: ./abis/MarketOffers.json
+      eventHandlers:
+        - event: BlindOfferWithdrawn(indexed uint256,indexed address)
+          handler: handleBlindOfferWithdrawn
+        - event: BlindOffered(bool,uint256,uint256,uint256,indexed address,indexed address)
+          handler: handleBlindOffered
+        - event: OfferAccepted(uint256,indexed uint256,indexed address,indexed address)
+          handler: handleOfferAccepted
+        - event: OfferRefunded(indexed uint256,indexed uint256,indexed address)
+          handler: handleOfferRefunded
+        - event: OfferWithdrawn(indexed uint256,indexed uint256,indexed address)
+          handler: handleOfferWithdrawn
+        - event: Offered(uint256,indexed uint256,indexed address,indexed address,uint256)
+          handler: handleOffered
+      file: ./src/mappings/MarketOffers.ts
+  - kind: ethereum/contract
+    name: MarketCollections
+    network: rinkeby
+    source:
+      address: "0xAe042E24C6530A8c9f4d1535aBbF9635556bCFE9"
+      abi: MarketCollections
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.5
+      language: wasm/assemblyscript
+      entities:
+        - Collection
+      abis:
+        - name: MarketCollections
+          file: ./abis/MarketCollections.json
+      eventHandlers:
+        - event: CollectionUpdated(bool,indexed address)
+          handler: handleCollectionUpdated
+      file: ./src/mappings/MarketCollections.ts
+  - kind: ethereum/contract
+    name: RewardsControl
+    network: rinkeby
+    source:
+      address: "0xD89099C8310D2215195cbd8Ff5DBf35FD110100E"
+      abi: RewardsControl
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.5
+      language: wasm/assemblyscript
+      entities:
+        - ClaimedRewards
+        - RewardsToken
+        - RewardsUser
+        - Token
+        - ClaimClock
+        - ReceivedRewards
+      abis:
+        - name: RewardsControl
+          file: ./abis/RewardsControl.json
+      eventHandlers:
+        - event: DaoClaimed(indexed address,uint256,uint256[],address[])
+          handler: handleDaoClaimed
+        - event: DevClaimed(indexed address,uint256,uint256[],address[])
+          handler: handleDevClaimed
+        - event: NewUser(indexed uint256,indexed address)
+          handler: handleNewUser
+        - event: Received(address,uint256)
+          handler: handleReceived
+        - event: RemovedDev(indexed address)
+          handler: handleRemovedDev
+        - event: RewardsClaimed(indexed address,uint256,uint256[],address[])
+          handler: handleRewardsClaimed
+        - event: SetTime(indexed uint256,uint256,uint256,uint256)
+          handler: handleSetTime
+      file: ./src/mappings/RewardsControl.ts
+  - kind: ethereum/contract
+    name: Mint
+    network: rinkeby
+    source:
+      address: "0x585c3Efea4554Aa4148ea916dC17DA8Bd1A49634"
+      abi: Mint
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.5
+      language: wasm/assemblyscript
+      entities:
+        - nftClaimed
+        - Mint
+        - NFT
+      abis:
+        - name: Mint
+          file: ./abis/Mint.json
+      eventHandlers:
+        - event: Received(address,uint256)
+          handler: handleReceived
+        - event: nftClaimed(uint256,address)
+          handler: handlenftClaimed
+      file: ./src/mappings/Mint.ts
+  - kind: ethereum
+    name: TempMint
+    network: rinkeby
+    source:
+      address: "0x1a3A91C3d59b93C96a7EE023cbC2Aa762DA0dceA"
+      abi: TempMint
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.5
+      language: wasm/assemblyscript
+      entities:
+        - Mint
+        - NFT
+      abis:
+        - name: TempMint
+          file: ./abis/TempMint.json
+      eventHandlers:
+        - event: nftClaimed(uint256,address,address)
+          handler: handlenftClaimed
+      file: ./src/mappings/TempMint.ts
