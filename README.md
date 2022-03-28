@@ -3,15 +3,12 @@ Create a better subgraph than me, before I do.
 
 The Phar-Out NFT Market needs a subgraph for decentralized querying in the front-end!
 
-I generated and coded the temp-mint contract and Pharout NFT contract subgraphs and deployed both the Rinkeby and Mainnet versions here:
-<ul>
-  <li>https://thegraph.com/studio/subgraph/pharout-temp-mint-mainnet/</li>
-  <li>https://thegraph.com/studio/subgraph/pharout-temp-mint/</li>
-</ul>
+I generated and coded the temp-mint contract and Pharout NFT contract subgraphs and deployed both the Rinkeby and Mainnet versions.
+
 You can find the Rinkeby addresses of the current test contracts here:
 
 <ul>
-  <li>"rinkeby_MarketBidsAddress": "0x58Cf70baCd7e754161f604228bbeC1C48b619893"</li>
+  <li> "rinkeby_MarketBidsAddress": "0x58Cf70baCd7e754161f604228bbeC1C48b619893"</li>
   <li> "rinkeby_MarketCollectionsAddress": "0xAe042E24C6530A8c9f4d1535aBbF9635556bCFE9"</li>
   <li> "rinkeby_MarketOffersAddress": "0x92A39E24935Ced66684faaffA9b4B3262419c597"</li>
   <li> "rinkeby_MarketRoleProviderAddress": "0x0dc4b15f3dB2bDcCf7f577D45e388279386126D0"</li>
@@ -23,7 +20,7 @@ You can find the Rinkeby addresses of the current test contracts here:
   <li>  "rinkeby_RewardsControlAddress": "0xD89099C8310D2215195cbd8Ff5DBf35FD110100E"</li>  
 </ul>
 
-I will upload a current diagram of the marketplace interactions for you to visualize how the marketplace will interact with each other, as well as a base example of all the entities I would like recorded.
+Below is a current diagram of the marketplace for you to visualize how the marketplace will interact with each other. There is also a base example of all the entities I would like recorded. I may expand on them, feel free to improvise.
 <img src="https://github.com/StarKeyJON/GraphBounty/blob/main/pharoutmarketdiagram.png" />
 <img src="https://github.com/StarKeyJON/GraphBounty/blob/main/PharOutRewardsControllerDiagram.png" />
 <h4>The best creator of a subgraph is determined by:</h4>
@@ -38,3 +35,4 @@ I will upload a current diagram of the marketplace interactions for you to visua
   </ul>
   This would ideally be one marketplace subgraph.
   Due note, the PhamToken is a test token in place of PHUNKY, and the Mint contract will be the mainnet mint contract used to exchange PHNUNKY for PharOut NFTs.
+The devs total rewards are split in half, 1/2 goes to the dev multi-sig, the remaining 1/2 gets split between devs to claim daily.
