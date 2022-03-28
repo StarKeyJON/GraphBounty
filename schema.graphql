@@ -40,7 +40,7 @@ enum StatsType {
   users
   listings
   sales
-  vloume
+  volume
   bids
   bidVolume
   offers
