@@ -26,7 +26,7 @@ Below is a current diagram of the marketplace for you to visualize how the marke
 <h4>The best creator of a subgraph is determined by:</h4>
 <ul>
   <li>Does include a link to a public Github with a Readme explaining any unique features or decisions made.</li>
-  <li>Does index each entity according to the schema provided.(If expanded upon or adapted for different use, please explain why.)</li>
+  <li>Does index each entity according to the schema provided.(If expanded upon or adapted for different use, please explain why, although you can spare the obvious.)</li>
   <li>Does include indexing daily and hourly Rewards Control contract ETH holdings, ERC20 holdings, ClaimClock time and attributes(alpha, delta, omega times and total user count including total Pharout NFT holders.). To also include total dev count, dev rewards and total DAO rewards for each daily and hourly period.</li>
   <li>Is not filled with generic events or function handlers.</li>
   <li>Must listen to retarded phunk at least once while coding. https://www.youtube.com/watch?v=pHyA16xiaMQ</li>
