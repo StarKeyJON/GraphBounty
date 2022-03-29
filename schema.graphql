@@ -3,46 +3,50 @@ type _Schema_
     name: "userSearch"
     language: en
     algorithm: rank
-    include: [{ entity: "User", fields: [{ name: "address" }] }]
+    include: [{ entity: "User", fields: [{ name: "address" }, {name: "createdAt"}] }]
   )
 @fulltext(
     name: "listingSearch"
     language: en
     algorithm: rank
-    include: [{ entity: "MarketItem", fields: [{ name: "user" }, { name: "date" }, { name: "collection_address" }] }]
+    include: [{ entity: "MarketItem", fields: [{ name: "user" }, { name: "date" }, { name: "collection_address" }, { name: "token_id" }] }]
+  )
+@fulltext(
+    name: "swapSearch"
+    language: en
+    algorithm: rank
+    include: [{ entity: "Swap", fields: [{ name: "buyer" }, { name: "type" }, { name: "date" }, { name: "value" }, { name: "item" }] }]
   )
 @fulltext(
     name: "offerSearch"
     language: en
     algorithm: rank
-    include: [{ entity: "Offer", fields: [{ name: "user" }, { name: "date" }, { name: "collection_address" }] }]
+    include: [{ entity: "Offer", fields: [{ name: "offerer" }, { name: "type" }, { name: "date" }, { name: "item" }, { name: "isSpecific" }, { name: "token" }, { name: "valid" }] }]
   )
   @fulltext(
     name: "bidSearch"
     language: en
     algorithm: rank
-    include: [{ entity: "Bid", fields: [{ name: "user" }, { name: "date" }, { name: "collection_address" }] }]
+    include: [{ entity: "Bid", fields: [{ name: "bidder" }, { name: "type" }, { name: "date" }, { name: "item" }, { name: "value" }, { name: "isSpecific" }, { name: "valid" }] }]
   )
   @fulltext(
     name: "tradeSearch"
     language: en
     algorithm: rank
-    include: [{ entity: "Trade", fields: [{ name: "user" }, { name: "nft" }, { name: "collection_address" }] }]
+    include: [{ entity: "Trade", fields: [{ name: "trader" }, { name: "type" }, { name: "date" }, { name: "item" }, { name: "isSpecific" }, { name: "valid" },] }]
   )
   @fulltext(
     name: "nftSearch"
     language: en
     algorithm: rank
-    include: [{ entity: "NFT", fields: [{ name: "token_address" }, { name: "token_id" }, { name: "owner_of" }] }]
+    include: [{ entity: "NFT", fields: [{ name: "contract_type" }, { name: "token_address" }, { name: "token_id" }, { name: "owner_of" }] }]
   )
 
 enum StatsType {
   users
   listings
   sales
-  volume
   bids
-  bidVolume
   offers
   trades
   blindBids
@@ -51,46 +55,35 @@ enum StatsType {
 }
 
 type Stats @entity {
-  id: ID!
+  id: ID! #"{StatsType}_stats"
   type: StatsType!
   count: BigInt!
 }
 
 type User @entity {
   id: ID! #address
-  stats: [Stats!]!
+  createdAt: String!
   marketItems: [MarketItem!] @derivedFrom(field: "user")
   swaps: [Swap!] @derivedFrom(field: "buyer")
   bids: [Bid!] @derivedFrom(field: "bidder")
   offers: [Offer!] @derivedFrom(field: "offerer")
   trades: [Trade!] @derivedFrom(field: "trader")
-  rewardsClaimed: [RewardsUser!] @derivedFrom(field: "user")
+  rewards: [RewardsUser!] @derivedFrom(field: "user")
   mints: [Mint!] @derivedFrom(field: "minter")
 }
 
 type MarketItem @entity {
-  id: ID!
-  stats: [Stats!]!
+  id: ID! #fromAddress + tokenAddress + itemId
+  active: Boolean!
   user: User!
-  nft: NFT! 
+  nft: NFT!
   itemId: BigInt
   amount1155: BigInt
   price: BigInt
+  swaps: [Swap!] @derivedFrom(field: "item")
   bids: [Bid!] @derivedFrom(field: "item")
   offers: [Offer!] @derivedFrom(field: "item")
   trades: [Trade!] @derivedFrom(field: "item")
-}
-
-enum MediaType {
-  audio
-  video
-  image
-}
-
-type Media @entity {
-  id: ID!
-  media: Bytes!
-  type: MediaType!
 }
 
 enum NFTType {
@@ -98,21 +91,13 @@ enum NFTType {
   ERC1155
 }
 
-type Trait @entity {
-  id: ID!
-  trait: Bytes!
-  attribute: Bytes!
-}
-
 type Metadata @entity {
-  id: ID!
+  id: ID! #token_address + token_id
+  nft: NFT!
   type: NFTType!
-  uri: Bytes
-  media: Media
-  name: Bytes
-  symbol: Bytes
-  traits: [Trait!]
-  ranking: BigInt
+  uri: String
+  name: String
+  symbol: String
 }
 
 type NFT @entity {
@@ -121,13 +106,13 @@ type NFT @entity {
   token_address: Bytes!
   token_id: BigInt!
   owner_of: Bytes!
-  metadata: Metadata!
+  metadata: Metadata! @derivedFrom(field: "nft")
+  marketItems: [MarketItem!] @derivedFrom(field: "nft")
 }
 
 type Collection @entity {
   id: ID! #address
   address: Bytes!
-  metadata: Metadata!
   name: Bytes!
   canTrade: Boolean!
 }
@@ -140,6 +125,7 @@ enum OrderType {
 
 type Token @entity {
   id: ID! # address
+  token_address: Bytes!
   name: String!
   symbol: String!
   decimals: BigInt!
@@ -147,7 +133,7 @@ type Token @entity {
 
 type Swap @entity {
   id: ID! # tx
-  date: BigInt!
+  date: String!
   type: OrderType!
   item: MarketItem!
   buyer: User!
@@ -157,19 +143,19 @@ type Swap @entity {
 
 type Mint @entity {
   id: ID! # tx
-  date: BigInt!
+  date: String!
   minter: User!
   nftIds: BigInt!
-  amounts: BigInt!
+  value: BigInt
+  redemptionToken: Token
 }
 
 type Offer @entity {
-  id: ID!
+  id: ID! # tx
   type: OrderType!
-  date: BigInt!
-  item: MarketItem! @derivedFrom(field: "offers")
+  date: String!
+  item: MarketItem!
   offerId : BigInt!
-  value: BigInt!
   offerer: User!
   isSpecific: Boolean! # bool
   token: Token!
@@ -178,10 +164,10 @@ type Offer @entity {
 }
 
 type Bid @entity {
-  id: ID!
+  id: ID! # tx
   type: OrderType!
-  date: BigInt!
-  item: MarketItem! @derivedFrom(field: "bids")
+  date: String!
+  item: MarketItem!
   bidId : BigInt!
   bidder: User!
   value: BigInt!
@@ -191,10 +177,10 @@ type Bid @entity {
 }
 
 type Trade @entity {
-  id: ID!
+  id: ID! # tx
   type: OrderType!
-  date: BigInt!
-  item: MarketItem! @derivedFrom(field: "trades")
+  date: String!
+  item: MarketItem!
   tradeId : BigInt!
   trader: User!
   isSpecific: Boolean! # bool
@@ -209,34 +195,35 @@ enum RewardType {
 }
 
 type RewardsToken @entity {
-  id: ID!
+  id: ID! #token_address
   token: Token!
   amount: BigInt!
 }
 
 type ClaimedRewards @entity {
-  id: ID!
-  date: BigInt!
+  id: ID! # tx
+  user: RewardsUser!
+  date: String!
   type: RewardType!
   eth: BigInt!
   tokens: [RewardsToken!]
 }
 
 type RewardsUser @entity {
-  id: ID!
-  user: User! @derivedFrom (field: "rewardsClaimed")
+  id: ID! #address
+  user: User!
   count: BigInt!
   type: RewardType!
-  createdAt: BigInt!
-  claims: [ClaimedRewards!]
+  createdAt: String!
+  claims: [ClaimedRewards!] @derivedFrom(field: "user")
   alpha: BigInt
   delta: BigInt
   omega: BigInt
 }
 
 type ClaimClock @entity {
-  id: ID!
-  time: BigInt!
+  id: ID! #event.block.timestamp
+  date: String!
   alpha: BigInt!
   delta: BigInt!
   omega: BigInt!
@@ -253,6 +240,7 @@ enum ReceivedRewardsType {
 
 type ReceivedRewards @entity {
   id: ID!
+  date: String!
   type: ReceivedRewardsType!
   value: BigInt
   amount: BigInt
