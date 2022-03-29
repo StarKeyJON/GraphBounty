@@ -6,7 +6,7 @@ dataSources:
     name: NFTMarket
     network: rinkeby
     source:
-      address: "0xB8C9bB7C6D9eb97e31E9D1dBb6D15279dB982377"
+      address: "0x49A8f85d191D96211124cC4765989e393f9DFCe1"
       abi: NFTMarket
     mapping:
       kind: ethereum/events
@@ -17,17 +17,9 @@ dataSources:
         - User
         - MarketItem
         - NFT
-        - Collection
-        - Token
-        - Swap
-        - Bid
-        - Trade
-        - Offer
       abis:
         - name: NFTMarket
-          file: ./abis/NFTMarket.json
-        - name: ERC20
-          file: ./abis/ERC20.json
+          file: ./abis/rinkeby_NFTMarket.json
         - name: ERC721
           file: ./abis/ERC721.json
         - name: ERC1155
@@ -41,12 +33,12 @@ dataSources:
           handler: handleItemListed
         - event: ItemUpdated(uint256,indexed uint256,uint256,indexed address,indexed address)
           handler: handleItemUpdated
-      file: ./src/mapping.ts
+      file: ./src/MarketMapping.ts
   - kind: ethereum/contract
     name: MarketTrades
     network: rinkeby
     source:
-      address: "0xeD08820e94755dC30E161351427d2143Ef385c86"
+      address: "0xC5fDdaAe84a6ca3C7C58Cd56228DcFC7E80E3bE9"
       abi: MarketTrades
     mapping:
       kind: ethereum/events
@@ -60,7 +52,7 @@ dataSources:
         - Trade
       abis:
         - name: MarketTrades
-          file: ./abis/MarketTrades.json
+          file: ./abis/rinkeby_MarketTrades.json
         - name: ERC721
           file: ./abis/ERC721.json
         - name: ERC1155
@@ -81,7 +73,7 @@ dataSources:
     name: MarketBids
     network: rinkeby
     source:
-      address: "0x58Cf70baCd7e754161f604228bbeC1C48b619893"
+      address: "0xf7164522373a7bF04D63CC21611C17eB6bE117e0"
       abi: MarketBids
     mapping:
       kind: ethereum/events
@@ -95,7 +87,7 @@ dataSources:
         - Bid
       abis:
         - name: MarketBids
-          file: ./abis/MarketBids.json
+          file: ./abis/rinkeby_MarketBids.json
         - name: ERC721
           file: ./abis/ERC721.json
         - name: ERC1155
@@ -120,7 +112,7 @@ dataSources:
     name: MarketOffers
     network: rinkeby
     source:
-      address: "0x92A39E24935Ced66684faaffA9b4B3262419c597"
+      address: "0x8614Bae80E8Cb8bC5828DAB506EecF264EBFB032"
       abi: MarketOffers
     mapping:
       kind: ethereum/events
@@ -134,7 +126,7 @@ dataSources:
         - Offer
       abis:
         - name: MarketOffers
-          file: ./abis/MarketOffers.json
+          file: ./abis/rinkeby_MarketOffers.json
         - name: ERC20
           file: ./abis/ERC20.json
         - name: ERC721
@@ -144,7 +136,7 @@ dataSources:
       eventHandlers:
         - event: BlindOfferWithdrawn(indexed uint256,indexed address)
           handler: handleBlindOfferWithdrawn
-        - event: BlindOffered(bool,uint256,uint256,uint256,indexed address,indexed address)
+        - event: BlindOffered(bool,uint256,uint256,uint256,uint256,indexed address,indexed address)
           handler: handleBlindOffered
         - event: OfferAccepted(uint256,indexed uint256,indexed address,indexed address)
           handler: handleOfferAccepted
@@ -152,37 +144,14 @@ dataSources:
           handler: handleOfferRefunded
         - event: OfferWithdrawn(indexed uint256,indexed uint256,indexed address)
           handler: handleOfferWithdrawn
-        - event: Offered(uint256,indexed uint256,indexed address,indexed address,uint256)
+        - event: Offered(uint256,uint256,indexed address,indexed address,indexed address,uint256)
           handler: handleOffered
       file: ./src/mappings/MarketOffers.ts
-  - kind: ethereum/contract
-    name: MarketCollections
-    network: rinkeby
-    source:
-      address: "0xAe042E24C6530A8c9f4d1535aBbF9635556bCFE9"
-      abi: MarketCollections
-    mapping:
-      kind: ethereum/events
-      apiVersion: 0.0.5
-      language: wasm/assemblyscript
-      entities:
-        - Collection
-      abis:
-        - name: MarketCollections
-          file: ./abis/MarketCollections.json
-        - name: ERC721
-          file: ./abis/ERC721.json
-        - name: ERC1155
-          file: ./abis/ERC1155.json
-      eventHandlers:
-        - event: CollectionUpdated(bool,indexed address)
-          handler: handleCollectionUpdated
-      file: ./src/mappings/MarketCollections.ts
   - kind: ethereum/contract
     name: RewardsControl
     network: rinkeby
     source:
-      address: "0xD89099C8310D2215195cbd8Ff5DBf35FD110100E"
+      address: "0xF141FFea607d727FB7DCfb0B7fB4d143D513c5c5"
       abi: RewardsControl
     mapping:
       kind: ethereum/events
@@ -197,13 +166,9 @@ dataSources:
         - ReceivedRewards
       abis:
         - name: RewardsControl
-          file: ./abis/RewardsControl.json
+          file: ./abis/rinkeby_RewardsControl.json
         - name: ERC20
           file: ./abis/ERC20.json
-        - name: ERC721
-          file: ./abis/ERC721.json
-        - name: ERC1155
-          file: ./abis/ERC1155.json
       eventHandlers:
         - event: DaoClaimed(indexed address,uint256,uint256[],address[])
           handler: handleDaoClaimed
@@ -211,6 +176,8 @@ dataSources:
           handler: handleDevClaimed
         - event: NewUser(indexed uint256,indexed address)
           handler: handleNewUser
+        - event: NewDev(indexed address)
+          handler: handleNewDev
         - event: Received(address,uint256)
           handler: handleReceived
         - event: RemovedDev(indexed address)
@@ -224,7 +191,7 @@ dataSources:
     name: Mint
     network: rinkeby
     source:
-      address: "0x585c3Efea4554Aa4148ea916dC17DA8Bd1A49634"
+      address: "0x75f65B65047e170000587D245BAeA2e70007E30d"
       abi: Mint
     mapping:
       kind: ethereum/events
@@ -236,36 +203,12 @@ dataSources:
         - NFT
       abis:
         - name: Mint
-          file: ./abis/Mint.json
+          file: ./abis/rinkeby_Mint.json
         - name: ERC20
           file: ./abis/ERC20.json
         - name: ERC721
           file: ./abis/ERC721.json
       eventHandlers:
-        - event: Received(address,uint256)
-          handler: handleReceived
         - event: nftClaimed(uint256,address)
           handler: handlenftClaimed
       file: ./src/mappings/Mint.ts
-  - kind: ethereum
-    name: TempMint
-    network: rinkeby
-    source:
-      address: "0x1a3A91C3d59b93C96a7EE023cbC2Aa762DA0dceA"
-      abi: TempMint
-    mapping:
-      kind: ethereum/events
-      apiVersion: 0.0.5
-      language: wasm/assemblyscript
-      entities:
-        - Mint
-        - NFT
-      abis:
-        - name: TempMint
-          file: ./abis/TempMint.json
-        - name: ERC721
-          file: ./abis/ERC721.json
-      eventHandlers:
-        - event: nftClaimed(uint256,address,address)
-          handler: handlenftClaimed
-      file: ./src/mappings/TempMint.ts
