@@ -72,33 +72,40 @@ export function handleBlindBidentered(event: BlindBidentered): void {
   if (!bid) {
     bid = new Bid("blindBids_"+event.params.bidder.toString()+event.params.blindBidId.toString());
   }
-  
+  let date = getTimeString(event.block.timestamp) + " : " + getDateString(event.block.timestamp);
   bid.type = "blind";
-  bid.date = getTimeString(event.block.timestamp) + " : " + getDateString(event.block.timestamp);
+  bid.date = date;
+  bid.block = event.block.timestamp;
+  bid.item = "blindBids_" + event.transaction.from.toString() + event.params.blindBidId.toString();
+  bid.bidId = event.params.blindBidId;
+  bid.bidder = event.params.bidder.toString();
+  bid.value = event.params.bidValue;
+  bid.isSpecific = true;
+  bid.valid = true;
+  bid.save();
 
-  let item = MarketItem.load("market_bids_"+stats.count.toString());
-  if(!item){
-    item = new MarketItem("market_bids_"+stats.count.toString());
-  }
+  let item = new MarketItem("blindBids_" + event.transaction.from.toString() + event.params.blindBidId.toString());
+  item.block = event.block.timestamp;
+  item.date = date;
+  item.active = true;
+  item.user = event.transaction.from.toString();
+  item.nft = event.params.collectionBid.toString() + event.params.tokenId.toString()
+  item.itemId = event.params.blindBidId;
+  item.amount1155 = event.params.amount1155;
+  item.price = null;
+  item.save();
 
-  let nft = NFT.load(event.params.bidder.toString()+event.params.tokenId.toString());
-
+  let nft = NFT.load(event.params.collectionBid.toString()+event.params.tokenId.toString());
   if(!nft){
-    nft = new NFT(event.params.bidder.toString()+event.params.tokenId.toString())
+    nft = new NFT(event.params.collectionBid.toString()+event.params.tokenId.toString())
+  }
+  if(event.params.amount1155 > BigInt.fromI32(0)){
+    nft.contract_type = "ERC1155";
+  } else {
+    nft.contract_type = "ERC721";
   }
   nft.token_id = event.params.tokenId;
   nft.save();
-
-  bid.value = event.params.bidValue;
-
-  item.save()
-
-  bid.valid = true;
-  bid.bidId = event.params.blindBidId;
-  bid.bidder = event.params.bidder.toString();
-  bid.isSpecific = true;
-
-  bid.save()
 }
 
 export function handleBlindBidAccepted(event: BlindBidAccepted): void {
