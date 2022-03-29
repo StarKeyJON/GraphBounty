@@ -139,17 +139,17 @@ type Swap @entity {
 }
 
 type Mint @entity {
-  id: ID! # tx
+  id: ID! # minter + nftId
   date: String!
   block: BigInt!
   minter: User!
-  nftIds: BigInt!
+  nftId: BigInt!
   value: BigInt
   redemptionToken: Token
 }
 
 type Offer @entity {
-  id: ID! # tx
+  id: ID! # offerer + offerId
   type: OrderType!
   date: String!
   block: BigInt!
@@ -163,7 +163,7 @@ type Offer @entity {
 }
 
 type Bid @entity {
-  id: ID! # tx
+  id: ID! # bidder + bidId
   type: OrderType!
   date: String!
   block: BigInt!
@@ -171,13 +171,12 @@ type Bid @entity {
   bidId : BigInt!
   bidder: User!
   value: BigInt!
-  user: Bytes! #address
   isSpecific: Boolean! # bool
   valid: Boolean!
 }
 
 type Trade @entity {
-  id: ID! # tx
+  id: ID! # trader + tradeId
   type: OrderType!
   date: String!
   block: BigInt!
