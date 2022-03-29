@@ -3,7 +3,7 @@ type _Schema_
     name: "userSearch"
     language: en
     algorithm: rank
-    include: [{ entity: "User", fields: [{ name: "address" }, {name: "createdAt"}] }]
+    include: [{ entity: "User", fields: [{ name: "address" }, {name: "date"}, { name: "block" }] }]
   )
 @fulltext(
     name: "listingSearch"
@@ -62,7 +62,8 @@ type Stats @entity {
 
 type User @entity {
   id: ID! #address
-  createdAt: String!
+  date: String!
+  block: BigInt!
   marketItems: [MarketItem!] @derivedFrom(field: "user")
   swaps: [Swap!] @derivedFrom(field: "buyer")
   bids: [Bid!] @derivedFrom(field: "bidder")
@@ -74,6 +75,8 @@ type User @entity {
 
 type MarketItem @entity {
   id: ID! #fromAddress + tokenAddress + itemId
+  block: BigInt!
+  date: String!
   active: Boolean!
   user: User!
   nft: NFT!
@@ -102,7 +105,7 @@ type Metadata @entity {
 
 type NFT @entity {
   id: ID! #token_address + token_id
-  contract_type: Bytes!
+  contract_type: NFT!
   token_address: Bytes!
   token_id: BigInt!
   owner_of: Bytes!
@@ -127,6 +130,7 @@ type Token @entity {
 type Swap @entity {
   id: ID! # tx
   date: String!
+  block: BigInt!
   type: OrderType!
   item: MarketItem!
   buyer: User!
@@ -137,6 +141,7 @@ type Swap @entity {
 type Mint @entity {
   id: ID! # tx
   date: String!
+  block: BigInt!
   minter: User!
   nftIds: BigInt!
   value: BigInt
@@ -147,6 +152,7 @@ type Offer @entity {
   id: ID! # tx
   type: OrderType!
   date: String!
+  block: BigInt!
   item: MarketItem!
   offerId : BigInt!
   offerer: User!
@@ -160,6 +166,7 @@ type Bid @entity {
   id: ID! # tx
   type: OrderType!
   date: String!
+  block: BigInt!
   item: MarketItem!
   bidId : BigInt!
   bidder: User!
@@ -173,6 +180,7 @@ type Trade @entity {
   id: ID! # tx
   type: OrderType!
   date: String!
+  block: BigInt!
   item: MarketItem!
   tradeId : BigInt!
   trader: User!
@@ -197,6 +205,7 @@ type ClaimedRewards @entity {
   id: ID! # tx
   user: RewardsUser!
   date: String!
+  block: BigInt!
   type: RewardType!
   eth: BigInt!
   tokens: [RewardsToken!]
@@ -208,6 +217,7 @@ type RewardsUser @entity {
   count: BigInt!
   type: RewardType!
   createdAt: String!
+  blockCreated: BigInt!
   claims: [ClaimedRewards!] @derivedFrom(field: "user")
   alpha: BigInt
   delta: BigInt
@@ -217,6 +227,7 @@ type RewardsUser @entity {
 type ClaimClock @entity {
   id: ID! #event.block.timestamp
   date: String!
+  block: BigInt!
   alpha: BigInt!
   delta: BigInt!
   omega: BigInt!
@@ -234,6 +245,7 @@ enum ReceivedRewardsType {
 type ReceivedRewards @entity {
   id: ID!
   date: String!
+  block: BigInt!
   type: ReceivedRewardsType!
   value: BigInt
   amount: BigInt
