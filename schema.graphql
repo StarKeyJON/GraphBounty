@@ -9,7 +9,7 @@ type _Schema_
     name: "listingSearch"
     language: en
     algorithm: rank
-    include: [{ entity: "MarketItem", fields: [{ name: "user" }, { name: "date" }, { name: "collection_address" }, { name: "token_id" }] }]
+    include: [{ entity: "MarketItem", fields: [{ name: "user" }, { name: "date" }, { name: "nft" }, { name: "active" }, { name: "price" }] }]
   )
 @fulltext(
     name: "swapSearch"
@@ -108,13 +108,6 @@ type NFT @entity {
   owner_of: Bytes!
   metadata: Metadata! @derivedFrom(field: "nft")
   marketItems: [MarketItem!] @derivedFrom(field: "nft")
-}
-
-type Collection @entity {
-  id: ID! #address
-  address: Bytes!
-  name: Bytes!
-  canTrade: Boolean!
 }
 
 enum OrderType {
@@ -230,7 +223,7 @@ type ClaimClock @entity {
   totalUsers: BigInt!
   totalDevs: BigInt!
   totalEther: BigInt!
-  tokens: [RewardsToken!]
+  tokens: [RewardsToken!] 
 }
 
 enum ReceivedRewardsType {
