@@ -30,18 +30,22 @@ export function handleItemListed(event: ItemListed): void {
     user_stats = new Stats("user_stats");
     user_stats.count = BigInt.fromI32(0);
   }
-  let date = getDateString(event.block.timestamp);
+  let date = getTimeString(event.block.timestamp) + " : " + getDateString(event.block.timestamp);
 
   let user = User.load(event.params.seller.toString());
 
   if(!user){
     user = new User(event.params.seller.toString());
-    user_stats.count = listing_stats.count + BigInt.fromI32(1);
+    user_stats.count = user_stats.count + BigInt.fromI32(1);
     user_stats.type = "users";
+    user.block = event.block.timestamp;
+    user.date = date;
   }
   user.save();
 
-  let marketItem = new MarketItem(event.transaction.from.toString() + event.params.nftContract.toString() + event.params.itemId.toString())
+  let marketItem = new MarketItem(event.transaction.from.toString() + event.params.itemId.toString())
+  marketItem.block = event.block.timestamp;
+  marketItem.date = date;
   marketItem.itemId = event.params.itemId;
   marketItem.active = true;
   marketItem.amount1155 = event.params.amount1155;
@@ -99,7 +103,7 @@ export function handleItemListed(event: ItemListed): void {
 
 export function handleItemBought(event: ItemBought): void {
 
-  let sale_stats = Stats.load("sale_stats");
+  let sale_stats = Stats.load("sales_stats");
   
   if(!sale_stats){
     sale_stats = new Stats("sales_stats");
@@ -110,7 +114,8 @@ export function handleItemBought(event: ItemBought): void {
   sale_stats.count = sale_stats.count + BigInt.fromI32(1)
 
   let swap = new Swap(event.transaction.hash.toHexString());
-  swap.date = getTimeString(event.block.timestamp) + " : " + getDateString(event.block.timestamp);
+  let date = getTimeString(event.block.timestamp) + " : " + getDateString(event.block.timestamp);
+  swap.date = date;
   swap.block = event.block.timestamp;
   swap.type = "listed";
   let user = User.load(event.params.fromAddress.toString());
@@ -132,7 +137,6 @@ export function handleItemDelisted(event: ItemDelisted): void {
   if(!marketItem){marketItem = new MarketItem(event.transaction.from.toString() + event.params.nftContract.toString() + event.params.itemId.toString())
   }
   marketItem.active = false;
-
 }
 
 export function handleItemUpdated(event: ItemUpdated): void {
