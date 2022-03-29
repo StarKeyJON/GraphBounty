@@ -8,16 +8,12 @@ I generated and coded the temp-mint contract and Pharout NFT contract subgraphs 
 You can find the Rinkeby addresses of the current test contracts here:
 
 <ul>
-  <li> "rinkeby_MarketBidsAddress": "0x58Cf70baCd7e754161f604228bbeC1C48b619893"</li>
-  <li> "rinkeby_MarketCollectionsAddress": "0xAe042E24C6530A8c9f4d1535aBbF9635556bCFE9"</li>
-  <li> "rinkeby_MarketOffersAddress": "0x92A39E24935Ced66684faaffA9b4B3262419c597"</li>
-  <li> "rinkeby_MarketRoleProviderAddress": "0x0dc4b15f3dB2bDcCf7f577D45e388279386126D0"</li>
-  <li> "rinkeby_MarketTradesAddress": "0xeD08820e94755dC30E161351427d2143Ef385c86"</li>
-  <li> "rinkeby_MintAddress": "0x585c3Efea4554Aa4148ea916dC17DA8Bd1A49634"</li>
-  <li> "rinkeby_NFTMarketAddress": "0xB8C9bB7C6D9eb97e31E9D1dBb6D15279dB982377"</li>
-  <li> "rinkeby_OwnerProxyAddress": "0x531120563Dc04bE4b8dC0E167f63EE520bd2a17B"</li>
-  <li> "rinkeby_PhamTokenAddress": "0xA70C63dA41263cEb34cd66494Ebf95f7140312E1"</li>
-  <li>  "rinkeby_RewardsControlAddress": "0xD89099C8310D2215195cbd8Ff5DBf35FD110100E"</li>  
+  <li> "rinkeby_NFTMarketAddress": "0x49A8f85d191D96211124cC4765989e393f9DFCe1"</li>
+  <li> "rinkeby_MarketBidsAddress": "0xf7164522373a7bF04D63CC21611C17eB6bE117e0"</li>
+  <li> "rinkeby_MarketOffersAddress": "0x8614Bae80E8Cb8bC5828DAB506EecF264EBFB032"</li>
+  <li> "rinkeby_MarketTradesAddress": "0xC5fDdaAe84a6ca3C7C58Cd56228DcFC7E80E3bE9"</li>
+  <li> "rinkeby_MintAddress": "0x75f65B65047e170000587D245BAeA2e70007E30d"</li>
+  <li> "rinkeby_RewardsControlAddress": "0xF141FFea607d727FB7DCfb0B7fB4d143D513c5c5"</li>  
 </ul>
 
 Below is a current diagram of the marketplace for you to visualize how the marketplace will interact with each other. There is also a base example of all the entities I would like recorded. I may expand on them, feel free to improvise.
