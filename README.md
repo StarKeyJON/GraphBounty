@@ -1,4 +1,6 @@
 # GraphBounty
+<h1>Bounty is over!</h1>
+
 Create a better subgraph than me, before I do.
 
 The Phar-Out NFT Market needs a subgraph for decentralized querying in the front-end!
