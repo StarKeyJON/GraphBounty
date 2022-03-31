@@ -3,43 +3,37 @@ type _Schema_
     name: "userSearch"
     language: en
     algorithm: rank
-    include: [{ entity: "User", fields: [{ name: "address" }, {name: "date"}, { name: "block" }] }]
+    include: [{ entity: "User", fields: [{ name: "id" }, {name: "date"}] }]
   )
 @fulltext(
     name: "listingSearch"
     language: en
     algorithm: rank
-    include: [{ entity: "MarketItem", fields: [{ name: "user" }, { name: "date" }, { name: "nft" }, { name: "active" }, { name: "price" }] }]
+    include: [{ entity: "MarketItem", fields: [{ name: "user" }, { name: "date" }, { name: "nft" }] }]
   )
 @fulltext(
     name: "swapSearch"
     language: en
     algorithm: rank
-    include: [{ entity: "Swap", fields: [{ name: "buyer" }, { name: "type" }, { name: "date" }, { name: "value" }, { name: "item" }] }]
+    include: [{ entity: "Swap", fields: [{ name: "buyer" }, { name: "type" }, { name: "date" }] }]
   )
 @fulltext(
     name: "offerSearch"
     language: en
     algorithm: rank
-    include: [{ entity: "Offer", fields: [{ name: "offerer" }, { name: "type" }, { name: "date" }, { name: "item" }, { name: "isSpecific" }, { name: "token" }, { name: "valid" }] }]
+    include: [{ entity: "Offer", fields: [{ name: "offerer" }, { name: "type" }, { name: "date" }, { name: "token" }] }]
   )
   @fulltext(
     name: "bidSearch"
     language: en
     algorithm: rank
-    include: [{ entity: "Bid", fields: [{ name: "bidder" }, { name: "type" }, { name: "date" }, { name: "item" }, { name: "value" }, { name: "isSpecific" }, { name: "valid" }] }]
+    include: [{ entity: "Bid", fields: [{ name: "bidder" }, { name: "type" }, { name: "date" }] }]
   )
   @fulltext(
     name: "tradeSearch"
     language: en
     algorithm: rank
-    include: [{ entity: "Trade", fields: [{ name: "trader" }, { name: "type" }, { name: "date" }, { name: "item" }, { name: "isSpecific" }, { name: "valid" },] }]
-  )
-  @fulltext(
-    name: "nftSearch"
-    language: en
-    algorithm: rank
-    include: [{ entity: "NFT", fields: [{ name: "contract_type" }, { name: "token_address" }, { name: "token_id" }, { name: "owner_of" }] }]
+    include: [{ entity: "Trade", fields: [{ name: "trader" }, { name: "type" }, { name: "date" }] }]
   )
 
 enum StatsType {
@@ -70,7 +64,7 @@ type User @entity {
   offers: [Offer!] @derivedFrom(field: "offerer")
   trades: [Trade!] @derivedFrom(field: "trader")
   rewards: [RewardsUser!] @derivedFrom(field: "user")
-  mints: [Mint!] @derivedFrom(field: "minter")
+  mints: [MintEvent!] @derivedFrom(field: "minter")
 }
 
 type MarketItem @entity {
@@ -138,7 +132,7 @@ type Swap @entity {
   amount1155: BigInt!
 }
 
-type Mint @entity {
+type MintEvent @entity {
   id: ID! # minter + nftId
   date: String!
   block: BigInt!
@@ -195,9 +189,13 @@ enum RewardType {
 }
 
 type RewardsToken @entity {
-  id: ID! #token_address
+  id: ID! #block+day+month+year
   token: Token!
   amount: BigInt!
+  date: String!
+  block: BigInt!
+  dayData: RewardsDayData!
+  hourData: RewardsHourData!
 }
 
 type ClaimedRewards @entity {
@@ -213,6 +211,7 @@ type ClaimedRewards @entity {
 type RewardsUser @entity {
   id: ID! #address
   user: User!
+  userId: BigInt!
   count: BigInt!
   type: RewardType!
   createdAt: String!
@@ -221,10 +220,11 @@ type RewardsUser @entity {
   alpha: BigInt
   delta: BigInt
   omega: BigInt
+  valid: Boolean!
 }
 
 type ClaimClock @entity {
-  id: ID! #event.block.timestamp
+  id: ID! #day + month + year
   date: String!
   block: BigInt!
   alpha: BigInt!
@@ -236,17 +236,34 @@ type ClaimClock @entity {
   tokens: [RewardsToken!] 
 }
 
-enum ReceivedRewardsType {
-  eth
-  tokens
+type RewardsDayData @entity {
+  id: ID! # day + month + year
+  date: BigInt! # end of range
+  totalEth: BigInt!
+  totalTokens: BigInt!
+  tokens: [RewardsToken!] @derivedFrom(field: "dayData")
+  totalUsers: BigInt!
+  totalNFTHolders: BigInt!
+  totalDevs: BigInt!
+  userClaimAlpha: BigInt!
+  userClaimDelta: BigInt!
+  userClaimOmega: BigInt!
+  devClaim: BigInt!
+  daoClaim: BigInt!
 }
 
-type ReceivedRewards @entity {
-  id: ID!
-  date: String!
-  block: BigInt!
-  type: ReceivedRewardsType!
-  value: BigInt
-  amount: BigInt
-  token: RewardsToken
+type RewardsHourData @entity {
+  id: ID! # day + month + year + hour
+  date: BigInt! # end of range
+  totalEth: BigInt!
+  totalTokens: BigInt!
+  tokens: [RewardsToken!]  @derivedFrom(field: "hourData")
+  totalUsers: BigInt!
+  totalNFTHolders: BigInt!
+  totalDevs: BigInt!
+  userClaimAlpha: BigInt!
+  userClaimDelta: BigInt!
+  userClaimOmega: BigInt!
+  devClaim: BigInt!
+  daoClaim: BigInt!
 }
