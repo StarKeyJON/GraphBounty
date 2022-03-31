@@ -10,7 +10,7 @@ import {
   BlindBidentered,
   FundsForwarded
 } from "../../generated/MarketBids/MarketBids"
-import { Stats, NFT, Bid, MarketItem } from "../../generated/schema"
+import { User, Stats, NFT, Bid, MarketItem } from "../../generated/schema"
 import { getDateString, getTimeString } from '../helpers/datetime';
 /*~~~>
   tokenId: token_id of the NFT to be bid on;
@@ -24,6 +24,7 @@ export function handleBidEntered(event: BidEntered): void {
   let stats = Stats.load("bid_stats");
   if(!stats){
     stats = new Stats("bid_stats");
+    stats.type = "bids"
     stats.count = BigInt.fromI32(0);
   }
   stats.type = "bids";
@@ -39,6 +40,21 @@ export function handleBidEntered(event: BidEntered): void {
   bid.block = event.block.timestamp;
   bid.item = event.params.seller.toString() + event.params.itemId.toString();
   bid.bidId = event.params.bidId;
+  let user = User.load(event.params.seller.toString());
+
+  if(!user){
+    let user_stats = Stats.load("user_stats");
+    if(!user_stats){
+      user_stats = new Stats("user_stats");
+      user_stats.count = BigInt.fromI32(0);
+    }
+    user = new User(event.params.seller.toString());
+    user_stats.count = user_stats.count + BigInt.fromI32(1);
+    user_stats.type = "users";
+    user.block = event.block.timestamp;
+    user.date = date;
+  }
+  user.save();
   bid.bidder = event.params.bidder.toString();
   bid.value = event.params.bidValue;
   bid.isSpecific = true;
@@ -59,11 +75,12 @@ export function handleBidWithdrawn(event: BidWithdrawn): void {
 }
 
 export function handleBlindBidentered(event: BlindBidentered): void {
-  let stats = Stats.load(event.address.toString()+"_blind");
+  let stats = Stats.load("blindBid_stats");
 
   if(!stats){
-    stats = new Stats(event.address.toString()+"_blind");
+    stats = new Stats("blindBid_stats");
     stats.count = BigInt.fromI32(0);
+    stats.type = "blindBids"
   }
   stats.count = stats.count + BigInt.fromI32(1);
 
@@ -92,7 +109,6 @@ export function handleBlindBidentered(event: BlindBidentered): void {
   item.nft = event.params.collectionBid.toString() + event.params.tokenId.toString()
   item.itemId = event.params.blindBidId;
   item.amount1155 = event.params.amount1155;
-  item.price = null;
   item.save();
 
   let nft = NFT.load(event.params.collectionBid.toString()+event.params.tokenId.toString());
@@ -110,7 +126,9 @@ export function handleBlindBidentered(event: BlindBidentered): void {
 
 export function handleBlindBidAccepted(event: BlindBidAccepted): void {
   let bid = Bid.load("blindBids_"+event.params.bidder.toString()+event.params.blindBidId.toString())
-  if(bid){bid.valid = false}
+  if(bid){
+    bid.valid = false
+  }
 }
 
 export function handleBlindBidWithdrawn(event: BlindBidWithdrawn): void {
