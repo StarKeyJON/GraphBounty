@@ -73,7 +73,6 @@ export function handleTradeEntered(event: TradeEntered): void {
   marketItem.itemId = event.params.itemId;
   marketItem.active = true;
   marketItem.amount1155 = event.params.amount1155;
-  marketItem.price = null;
 
   marketItem.save();
 
@@ -131,7 +130,6 @@ export function handleBlindTradeEntered(event: BlindTradeEntered): void {
   trade.type = "blind";
   trade.date = date;
   trade.block = event.block.timestamp;
-  trade.item = null;
 
   let marketItem = MarketItem.load(event.params.trader.toString() + event.params.tradeId.toString());
   if(!marketItem){
@@ -142,7 +140,6 @@ export function handleBlindTradeEntered(event: BlindTradeEntered): void {
   marketItem.itemId = event.params.tradeId;
   marketItem.active = true;
   marketItem.amount1155 = event.params.amount1155;
-  marketItem.price = null;
 
   marketItem.save();
 
