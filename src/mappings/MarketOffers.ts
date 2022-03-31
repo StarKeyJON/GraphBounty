@@ -67,7 +67,7 @@ export function handleOffered(event: Offered): void {
     }
     let decimals = contract.try_decimals();
     if(!decimals.reverted){
-      token.decimals = decimals.value;
+      token.decimals = BigInt.fromI32(decimals.value);
     }
   }
 
@@ -118,7 +118,6 @@ export function handleBlindOffered(event: BlindOffered): void {
   offer.type = "blind";
   offer.date = date;
   offer.block = event.block.timestamp;
-  offer.item = null;
   offer.offerId = event.params.offerId;
   offer.offerer = event.params.offerer.toString();
   offer.isSpecific = true;
@@ -138,7 +137,7 @@ export function handleBlindOffered(event: BlindOffered): void {
     }
     let decimals = contract.try_decimals();
     if(!decimals.reverted){
-      token.decimals = decimals.value;
+      token.decimals = BigInt.fromI32(decimals.value);
     }
   }
 
