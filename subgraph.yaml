@@ -4,9 +4,9 @@ schema:
 dataSources:
   - kind: ethereum
     name: NFTMarket
-    network: rinkeby
+    network: localhost
     source:
-      address: "0x49A8f85d191D96211124cC4765989e393f9DFCe1"
+      address: "{{localhost_NFTMarketAddress}}"
       abi: NFTMarket
     mapping:
       kind: ethereum/events
@@ -19,7 +19,7 @@ dataSources:
         - NFT
       abis:
         - name: NFTMarket
-          file: ./abis/rinkeby_NFTMarket.json
+          file: ./abis/localhost_NFTMarket.json
         - name: ERC721
           file: ./abis/ERC721.json
         - name: ERC1155
@@ -36,9 +36,9 @@ dataSources:
       file: ./src/MarketMapping.ts
   - kind: ethereum/contract
     name: MarketTrades
-    network: rinkeby
+    network: localhost
     source:
-      address: "0xC5fDdaAe84a6ca3C7C58Cd56228DcFC7E80E3bE9"
+      address: "{{localhost_MarketTradesAddress}}"
       abi: MarketTrades
     mapping:
       kind: ethereum/events
@@ -52,13 +52,13 @@ dataSources:
         - Trade
       abis:
         - name: MarketTrades
-          file: ./abis/rinkeby_MarketTrades.json
+          file: ./abis/localhost_MarketTrades.json
         - name: ERC721
           file: ./abis/ERC721.json
         - name: ERC1155
           file: ./abis/ERC1155.json
       eventHandlers:
-        - event: BlindTradeEntered(bool,bool,uint256,uint256,uint256,uint256,indexed address,indexed address,indexed address)
+        - event: BlindTradeEntered(bool,bool,bool,uint256,uint256,uint256,uint256,uint256,indexed address,indexed address,indexed address)
           handler: handleBlindTradeEntered
         - event: TradeAccepted(bool,bool,indexed uint256,indexed uint256,uint256,address,indexed address,address)
           handler: handleTradeAccepted
@@ -71,9 +71,9 @@ dataSources:
       file: ./src/mappings/MarketTrades.ts
   - kind: ethereum/contract
     name: MarketBids
-    network: rinkeby
+    network: localhost
     source:
-      address: "0xf7164522373a7bF04D63CC21611C17eB6bE117e0"
+      address: "{{localhost_MarketBidsAddress}}"
       abi: MarketBids
     mapping:
       kind: ethereum/events
@@ -87,7 +87,7 @@ dataSources:
         - Bid
       abis:
         - name: MarketBids
-          file: ./abis/rinkeby_MarketBids.json
+          file: ./abis/localhost_MarketBids.json
         - name: ERC721
           file: ./abis/ERC721.json
         - name: ERC1155
@@ -110,9 +110,9 @@ dataSources:
       file: ./src/mappings/MarketBids.ts
   - kind: ethereum/contract
     name: MarketOffers
-    network: rinkeby
+    network: localhost
     source:
-      address: "0x8614Bae80E8Cb8bC5828DAB506EecF264EBFB032"
+      address: "{{localhost_MarketOffersAddress}}"
       abi: MarketOffers
     mapping:
       kind: ethereum/events
@@ -126,7 +126,7 @@ dataSources:
         - Offer
       abis:
         - name: MarketOffers
-          file: ./abis/rinkeby_MarketOffers.json
+          file: ./abis/localhost_MarketOffers.json
         - name: ERC20
           file: ./abis/ERC20.json
         - name: ERC721
@@ -149,24 +149,25 @@ dataSources:
       file: ./src/mappings/MarketOffers.ts
   - kind: ethereum/contract
     name: RewardsControl
-    network: rinkeby
+    network: localhost
     source:
-      address: "0xF141FFea607d727FB7DCfb0B7fB4d143D513c5c5"
+      address: "{{localhost_RewardsControlAddress}}"
       abi: RewardsControl
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.5
       language: wasm/assemblyscript
       entities:
-        - ClaimedRewards
+        - Rewards
         - RewardsToken
         - RewardsUser
         - Token
         - ClaimClock
         - ReceivedRewards
+        - RewardsClaimed
       abis:
         - name: RewardsControl
-          file: ./abis/rinkeby_RewardsControl.json
+          file: ./abis/localhost_RewardsControl.json
         - name: ERC20
           file: ./abis/ERC20.json
       eventHandlers:
@@ -176,8 +177,6 @@ dataSources:
           handler: handleDevClaimed
         - event: NewUser(indexed uint256,indexed address)
           handler: handleNewUser
-        - event: NewDev(indexed address)
-          handler: handleNewDev
         - event: Received(address,uint256)
           handler: handleReceived
         - event: RemovedDev(indexed address)
@@ -186,12 +185,18 @@ dataSources:
           handler: handleRewardsClaimed
         - event: SetTime(indexed uint256,uint256,uint256,uint256)
           handler: handleSetTime
+      blockHandlers:
+        - handler: handleBlock
+          {{#callFilterEnabled}}
+          filter:
+            kind: call
+          {{/callFilterEnabled}}
       file: ./src/mappings/RewardsControl.ts
   - kind: ethereum/contract
     name: Mint
-    network: rinkeby
+    network: localhost
     source:
-      address: "0x75f65B65047e170000587D245BAeA2e70007E30d"
+      address: "{{localhost_MintAddress}}"
       abi: Mint
     mapping:
       kind: ethereum/events
@@ -199,16 +204,16 @@ dataSources:
       language: wasm/assemblyscript
       entities:
         - nftClaimed
-        - Mint
+        - MintEvent
         - NFT
       abis:
         - name: Mint
-          file: ./abis/rinkeby_Mint.json
-        - name: ERC20
-          file: ./abis/ERC20.json
-        - name: ERC721
-          file: ./abis/ERC721.json
+          file: ./abis/localhost_Mint.json
       eventHandlers:
-        - event: nftClaimed(uint256,address)
+        - event: nftClaimed(uint256,uint256,address)
           handler: handlenftClaimed
+        - event: NFTCountAdded(uint256)
+          handler: handleNFTCountAdded
+        - event: RedeemTokenSet(address,uint256)
+          handler: handleRedeemTokenSet
       file: ./src/mappings/Mint.ts
